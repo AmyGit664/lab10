@@ -1,0 +1,97 @@
+************************************************************************************************
+************************************ lab10: Le Makefile ****************************************
+************************************************************************************************
+
+
+***************************
+******1ère question *******
+***************************
+
+Nous disposons de trois fichiers sources "max.c", "min.c" et "var.c" et leurs fichiers .h associés et
+un fichier test.c pour appeler les fonctions qui calculent les max, min et variance d'un tableau. Pour
+les compiler cette fois-ci, les commandes qui permettront de générer lexécutable seront incluses dans un 
+fichier qu'on appelle un Makefile. Avec la commande "make", les instructions contenues dans ce fichier 
+sont traitées depuis le terminal. Nous verrons plus tard comment le créer et comment ça marche.
+
+***************************
+******2ème question *******
+***************************
+
+On peut créer ce Makefile avec l'éditeur Vim ou gedit. Un Makefile est composé de dépendances, de cibles et
+de règles. Les cibles sont les fichiers binaires qu'on souhaitent générer et les fichiers objets. Les
+dépendances sont en général les fichiers sources et les fichiers headers. Les règles sont les instructions
+à exécuter.
+La syntaxe est de la suivante:
+
+(cible: dépendances
+	règles)
+
+On peut voir un exemple avec le fichier Makefile crééé dans lequel les cibles "install" pour déplacer le binaire
+vers $HOME, les fichiers objet associés aux fichiers sources cités précédemment, l'exécutable et la cible "clean" 
+pour effacer les fichiers inutiles à la création du binaire.
+
+***************************
+******3ème question *******
+***************************
+
+Pour exécuter ce makefile, il suffit de taper la commande "make" dans la console. On remarque que seules les
+commandes du fichier (règles) sont affichées si on ne précise pas de cible. En faisant un ls, on voit que tous les
+fichiers objet sont créés et l'exécutable "test_global" est bien déplacé vers le répertoire /home/student.
+
+En faisant un "make install", on constate que la commande qui permet d'avoir cette cible est affichée en dernier
+même si dans le makefile, cette cible a été créée en premier. C'est normal car les fichiers objet sont générés en 
+premier ensuite vient l'exécutable. Une fois cette dernière créée, elle pourra être déplacée et exécutée.
+
+La commande "make min.o" permet la mise à jour de ce dernier.
+
+La commande "make clean" efface tous les fichiers.o générés au cas où après modification du makefile, on voudrait
+regénérer l'exécutable. Après exécution, c'est cette commande qui est affichée => "rm -rf *.o test_global".
+
+***************************
+******4ème question *******
+***************************
+
+Dans le Makefile, les macros suivants ou variables sont ajoutés et sont tout le temps en majuscule:
+- CC = gc
+- OBJ = max.o min.o var.o
+- CC_OPTIONS = 
+
+Le fait de définir ces variables ne change rien dans la compilation.
+On pourra remplacer les "gcc" par "$(CC)", les fichiers objet par "$(obj)" et enfin "-Wall" par "$(CC_OPTIONS)".
+***************************
+******5ème question *******
+***************************
+
+On veut redéfinir la macro CC_OPTIONS qui est à vide jusqu'à présent à -g -Wall. Pour la faire, on peut passer cette
+valeur à make depuis le terminal en tapant: " make 'CC_OPTIONS= -g -Wall' ".
+
+En fait, au terminal, on peut décider si on voudrait compiler soit en mode debug et dans ce cas on donne -g -Wall à la 
+macro, soit en mode release et on la laisse vide.
+
+***************************
+******6ème question *******
+***************************
+
+On peut remplacer également les noms des cibles et la liste des dépendances par des variables automatiques qui sont des 
+variables internes à make. Elles sont très utiles car on n'aura pas à tout réécrire et on gagne du temps.
+
+***************************
+******7ème question *******
+***************************
+
+La variable "DEBUG" est également définie dans le makefile selon que l'utilisateur souhaite créer un binaire en mode release
+ou en mode debug. Il suffit de faire une boucle avec l'instruction conditionnelle "ifeq" qui dépendra du paramètre passé à la
+variable "CC_OPTIONS" (voir makefile).
+
+******************************
+****** 8/9ème questions ******
+******************************
+
+Après modification, le makefile marche bien. On peut faire afficher le mode de compilation avec la commande "echo". Pour activer 
+cette commande, il ne faut surtout pas oublier de préciser la cible qui est une action qu'on souhaite réalisée que j'ai appelée 
+"decision" dans mon Makefile. 
+
+Après modification et test, on a bien un message qui nous dit si on est bien en mode release ou en mode debug.
+Par contre, il faudra préciser la cible install pour bien compiler. 
+
+
